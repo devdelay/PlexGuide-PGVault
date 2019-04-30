@@ -61,7 +61,7 @@ badserver () {
 
 #not used yet
 rclonelist () {
-  ls -l  /mnt/gdrive/plexguide/backup | grep "^d" | awk '{print $9}' > pgvault.serverlist
+  ls -l  /mnt/gcrypt/plexguide/backup | grep "^d" | awk '{print $9}' > pgvault.serverlist
 }
 
 pgboxrecall () {
@@ -123,7 +123,7 @@ buildup () {
 }
 ################################################ FOR BACKUP - END
 serverprime () {
-  tree -d -L 1 /mnt/gdrive/plexguide/backup | awk '{print $2}' | tail -n +2 | head -n -2 > /tmp/server.list
+  tree -d -L 1 /mnt/gcrypt/plexguide/backup | awk '{print $2}' | tail -n +2 | head -n -2 > /tmp/server.list
 
   ### List Out Apps In Readable Order (One's Not Installed)
   num=0
@@ -164,7 +164,7 @@ read -p '🌍 Type Server Name | Press [ENTER]: ' server < /dev/tty
   serverprime; fi
 
   tempserver=$server
-  ls -l  /mnt/gdrive/plexguide/backup/$tempserver | awk '{print $9}' | tail -n +2 > /var/plexguide/pgvault.restoreapps
+  ls -l  /mnt/gcrypt/plexguide/backup/$tempserver | awk '{print $9}' | tail -n +2 > /var/plexguide/pgvault.restoreapps
 
   ### Blank Out Temp List
   rm -rf /var/plexguide/pgvault.apprecall 1>/dev/null 2>&1
@@ -291,12 +291,12 @@ tee <<-EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-rclone --config /opt/appdata/plexguide/rclone.conf mkdir gdrive:/plexguide/backup/${server_id} 1>/dev/null 2>&1
+rclone --config /opt/appdata/plexguide/rclone.conf mkdir gcrypt:/plexguide/backup/${server_id} 1>/dev/null 2>&1
 
 rclone --config /opt/appdata/plexguide/rclone.conf \
 --stats-one-line --stats 1s --progress \
 moveto ${tarlocation}/${program_var}.tar \
-gdrive:/plexguide/backup/${server_id}/${program_var}.tar \
+gcrypt:/plexguide/backup/${server_id}/${program_var}.tar \
 -v --checksum --drive-chunk-size=64M --transfers=8
 
 ##### Remove File Incase
@@ -336,7 +336,7 @@ tee <<-EOF
 ↘️  Determining Initial File Size - $program_var
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-size=$(du -sh --apparent-size /mnt/gdrive/plexguide/backup/${srecall}/${program_var}.tar | /usr/bin/awk '{print $1}')
+size=$(du -sh --apparent-size /mnt/gcrypt/plexguide/backup/${srecall}/${program_var}.tar | /usr/bin/awk '{print $1}')
 sleep 2
 echo "Initial File Size: $size"
 sleep 2
@@ -351,7 +351,7 @@ EOF
 
 rclone --config /opt/appdata/plexguide/rclone.conf --stats-one-line \
 --stats 1s --progress \
-copy gdrive:/plexguide/backup/${srecall}/${program_var}.tar \
+copy gcrypt:/plexguide/backup/${srecall}/${program_var}.tar \
 ${tarlocation} \
 -v --checksum --drive-chunk-size=64M --transfers=8
 
